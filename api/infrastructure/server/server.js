@@ -1,8 +1,8 @@
 // Importaciones necesarias
 import express from "express";
 import http from "http";
+import path from 'path';
 import passport from "passport";
-
 import ConnectToDatabase from "../database/mongodb.js";
 import { jsonParseErrorHandler } from "../middlewares/errorHandling.js";
 import sessionConfig from "../middlewares/server/sessionConfig.js";
@@ -16,6 +16,8 @@ process.loadEnvFile();
 // Función para crear y configurar el servidor Express
 const createServer = () => {
   const app = express();
+
+  app.use(express.static(path.join(process.cwd(), 'public')));
 
   // Middlewares
   app.use(corsConfig); // Middleware para configurar CORS
@@ -41,9 +43,9 @@ const startApp = async () => {
   const host = process.env.VITE_HOST;
   let connectToDatabase = new ConnectToDatabase();
   await connectToDatabase.connectOpen();
-  const app = createServer();
+  const server = createServer();
 
-  app.listen({ port, host }, () => {
+  server.listen(port, host, () => {
     console.log(`Server corriendo en http://${host}:${port}`);
     console.log(`Documentación Swagger en http://${host}:${port}/api`);
   });

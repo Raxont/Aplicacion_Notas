@@ -1,18 +1,13 @@
 ---
-import LoginForm from "../components/login";
+import LoginForm from "../components/login.jsx";
 import Layouts from "../layouts/Layout.astro";
+
 ---
 
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="/src/style/global.css" />
-  </head>
   <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <Layouts title="Iniciar Sesión">
-      <LoginForm client:only />
+      <LoginForm client:only="react" />
     </Layouts>
   </body>
 </html>

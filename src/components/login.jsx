@@ -1,4 +1,4 @@
-import { useState,useEffect,useRef  } from 'react';
+import { useState  } from 'react';
 import 'boxicons';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,10 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
 	const [nombre, setNombre] = useState(''); // * Estado para almacenar el nick
 	const [contrasena_hash, setPassword] = useState(''); // * Estado para almacenar el password
-	const [error, setError] = useState(''); // * Estado para manejar los mensajes de error
 	const [nombreError, setNombreError] = useState(''); // Error para el campo nombre
 	const [contrasenaError, setContrasenaError] = useState(''); // Error para el campo contraseña
-	const timeoutRef = useRef(null); // Para almacenar el ID del timeout
 
 	// * Función para manejar el login normal
 	const handleSubmit = async e => {
@@ -66,7 +64,6 @@ const Login = () => {
 	
 		if (response.status===200) {
 			window.location.href = '/home';
-			setError('');
 		} else {
 			console.error('Error en el login:', data.message || 'Respuesta inesperada');
 			toast.error('Error en el login');
@@ -110,13 +107,13 @@ const Login = () => {
 				</div>
 				<button
 					type='submit'
-					className='w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600'
+					className='w-full bg-button-1 text-color-4 py-2 rounded-lg hover:bg-button-2'
 				>
 					Inciar sesion
 				</button>
 				<div className='my-3.5'>
 					<span>Puede loguearse tambien con:</span>
-					<button className="w-full flex items-center bg-primary dark:bg-white hover:bg-dark-bg dark:hover:bg-dark-primary gap-4" onClick={handleGoogleLogin}>
+					<button className="w-full flex items-center bg-button-1 rounded-lg hover:bg-button-2 gap-4 text-color-4" onClick={handleGoogleLogin}>
 						<box-icon type="logo" name="google" size="md" class="fill-current"></box-icon>
 						Inicia sesión con Google
 					</button>
@@ -125,7 +122,7 @@ const Login = () => {
 					<span>No esta registrado?</span>
 					<a
 						href='/register'
-						className='block text-center bg-green-500 text-white py-2 rounded hover:bg-green-600 mt-2'
+						className='block text-center bg-button-1 text-color-4 py-2 rounded hover:bg-button-2 mt-2'
 					>
 						Registrate
 					</a>
