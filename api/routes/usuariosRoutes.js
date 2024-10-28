@@ -314,7 +314,7 @@ router.post("/iniciarSesion", loginLimiter,(req, res) => {
  *       500:
  *         description: Error en el logout
  */
-router.post("/logout", authenticateToken, postLimiter,async (req, res) => {
+router.post("/logout", postLimiter,async (req, res) => {
     await userController.logout(req, res);
 });
 

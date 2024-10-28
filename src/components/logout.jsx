@@ -1,39 +1,43 @@
-import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Logout = () => {
-	const [error, setError] = useState(null);
 
 	const handleLogout = async e => {
 		e.preventDefault();
 		try {
-			const response = await fetch('http://localhost:3001/v1/users/logout', {
+			const response = await fetch('http://localhost:3001/usuarios/logout', {
 				method: 'POST',
 				credentials: 'include',
 			});
+			const data = await response.json(); // Extrae el cuerpo de la respuesta
 
 			if (response.ok) {
-				// Redirige al usuario a la página de login después de cerrar sesión
-				window.location.href = 'http://localhost:3000/login';
+				// Notificar éxito
+				toast.success(data.message);
+				setTimeout(() => {
+				window.location.href = '/'; // Redirige después de mostrar el mensaje
+				}, 3000); // Espera 3 segundos antes de redirigir
 			} else {
-				setError('Error en el logout. Intenta nuevamente.');
+				toast.error(data.message);
 			}
 		} catch (error) {
 			console.error('Error en el logout:', error);
-			setError('Error en la solicitud. Intenta nuevamente.');
+			toast.error('Error en la solicitud. Intenta nuevamente.');
 		}
 	};
 
 	return (
-		<div className='bg-white p-6 rounded shadow-md w-80 text-center'>
-			<h2 className='text-2xl font-bold mb-4'>Logout</h2>
-			<button
-				onClick={handleLogout}
-				className='w-full bg-red-500 text-white py-2 rounded hover:bg-red-600'
-			>
-				Cerrar sesión
-			</button>
-			{error && <p className='text-red-500 mt-4'>{error}</p>}
-		</div>
+		<>
+
+				<button
+					onClick={handleLogout}
+					className='w-full bg-red-500 text-white py-2 rounded hover:bg-red-600'
+				>
+					Cerrar sesión
+				</button>
+			<ToastContainer />
+		</>
 	);
 };
 

@@ -1,0 +1,13 @@
+---
+import LoginForm from "../components/home.jsx";
+import Layouts from "../layouts/Layout.astro";
+
+---
+
+<html lang="es">
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <Layouts title="Home">
+      <LoginForm client:only="react" />
+    </Layouts>
+  </body>
+</html>

@@ -9,7 +9,7 @@ process.loadEnvFile();
  * @param {Function} next - Función para pasar al siguiente middleware.
  */
 const authenticateToken = (req, res, next) => {
-  const userId = req.session?.passport?.user;
+  console.log("🚀 ~ authenticateToken ~ userId:", userId)
 
   if (req.session && userId) {
     const token = req.session.token;
