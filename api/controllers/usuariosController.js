@@ -108,7 +108,7 @@ class UserController {
         return res.status(400).json({
           status: 400,
           field: "nombre",
-          message: "El nombre ya existe en la base de datos",
+          message: "El nombre ya existe",
         });
       }
       // Verificar si el email ya existe en la base de datos

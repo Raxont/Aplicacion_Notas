@@ -75,12 +75,11 @@ const RegisterForm = () => {
 	
 		if (response.status===201) {
 			// Notificar éxito
-			toast.success('Registro exitoso! Redirigiendo...');
+			toast.success(data.message);
 			setTimeout(() => {
 			  window.location.href = '/'; // Redirige después de mostrar el mensaje
 			}, 3000); // Espera 3 segundos antes de redirigir
 		} else {
-			console.error('Error en el login:', data.message || 'Respuesta inesperada');
 			toast.error('Error en el registro: ' + (data.message || 'Inténtalo de nuevo.'));
 		}
 	};
