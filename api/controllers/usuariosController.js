@@ -367,6 +367,45 @@ class UserController {
       });
     }
   }
+
+  /**
+   * Cierra sesión del usuario.
+   * @param {Object} req - La solicitud HTTP.
+   * @param {Object} res - La respuesta HTTP.
+   * @returns {Promise<void>}
+   */
+  async logout(req, res) {
+    try {
+      // Limpiar la cookie del token
+      res.clearCookie("connect.sid", {
+        httpOnly: false,
+        secure: "false",
+        domain: "localhost",
+        sameSite: "strict",
+      });
+      // Destruir la sesión y enviar la respuesta solo cuando se complete
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("Error al destruir la sesión:", err);
+          return res.status(500).json({
+            status: 500,
+            message: "Error al cerrar la sesion del sistema",
+          });
+        }
+
+        res.json({
+          status: 200,
+          message: "Sesion cerrada correctamente"
+        });
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        status: 500,
+        message: "Error en el logout",
+      });
+    }
+  }
 }
 
 // Exporta la clase UserController para su uso en otras partes de la aplicación.

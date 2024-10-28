@@ -300,6 +300,27 @@ router.post("/iniciarSesion", loginLimiter,(req, res) => {
 
 /**
  * @swagger
+ * /usuarios/logout:
+ *   post:
+ *     summary: Cerrar Sesion
+ *     tags : [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Sesion cerrada correctamente
+ *       401:
+ *         description: Desautorizado Sesion no encontrada
+ *       429:
+ *         description: Tasa de solicitudes superada. Intenta de nuevo más tarde
+ *       500:
+ *         description: Error en el logout
+ */
+router.post("/logout", authenticateToken, postLimiter,async (req, res) => {
+    await userController.logout(req, res);
+});
+
+
+/**
+ * @swagger
  * /usuarios/:
  *   post:
  *     summary: Crear un nuevo usuario
