@@ -82,7 +82,7 @@ const Login = () => {
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className='bg-white p-6 rounded shadow-md w-80'
+				className='bg-white p-6 rounded w-[100%]'
 			>
 				<h2 className='text-2xl font-bold mb-4'>Inicia sesion</h2>
 				<div className='mb-4'>
@@ -110,13 +110,13 @@ const Login = () => {
 				</div>
 				<button
 					type='submit'
-					className='w-full bg-button-1 text-color-4 py-2 rounded-lg hover:bg-button-2'
+					className='w-full bg-button-1 text-color-1 py-2 rounded-lg hover:bg-button-2 h-[2.5rem]'
 				>
 					Inciar sesion
 				</button>
 				<div className='my-3.5'>
 					<span>Puede loguearse tambien con:</span>
-					<button className="w-full flex items-center bg-button-1 rounded-lg hover:bg-button-2 gap-4 text-color-4" onClick={handleGoogleLogin}>
+					<button className="w-full flex items-center bg-button-1 rounded-lg hover:bg-button-2 gap-4 text-color-1 h-[2.5rem]" onClick={handleGoogleLogin}>
 						<box-icon type="logo" name="google" size="md" class="fill-current"></box-icon>
 						Inicia sesión con Google
 					</button>
@@ -125,7 +125,7 @@ const Login = () => {
 					<span>No esta registrado?</span>
 					<a
 						href='/register'
-						className='block text-center bg-button-1 text-color-4 py-2 rounded hover:bg-button-2 mt-2'
+						className='block text-center bg-button-1 text-color-1 py-2 rounded-lg hover:bg-button-2 mt-2 h-[2.5rem]'
 					>
 						Registrate
 					</a>

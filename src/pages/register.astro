@@ -10,9 +10,9 @@ import Layouts from "../layouts/Layout.astro";
     <title>Registrarse</title>
     <link rel="stylesheet" href="/src/style/global.css" />
   </head>
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <body>
     <Layouts title="Registrarse">
-      <RegisterForm client:load />
+      <RegisterForm client:only="react" />
     </Layouts>
   </body>
 </html>

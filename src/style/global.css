@@ -27,5 +27,28 @@
 }
 
 body {
-    font-family: "Nunito-Regular", sans-serif; 
+    font-family: "Nunito-Regular", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    background: var(--background-1);
+    height: 100vh;
+}
+
+/* Estilos para simular vista móvil en pantallas grandes */
+@media (min-width: 900px) {
+    
+    .container {
+
+        padding-top: 10rem;
+        border-radius: 8px;
+    }
+}
+
+/* Volver a la visualización normal en tamaños de pantalla pequeños */
+@media (max-width: 899px) {
+    .container {
+        display: none;
+    }
 }

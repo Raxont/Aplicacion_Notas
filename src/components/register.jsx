@@ -88,7 +88,7 @@ const RegisterForm = () => {
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className='bg-white p-6 rounded shadow-md w-80'
+				className='bg-white p-6 rounded shadow-md w-[100%]'
 			>
 				<h2 className='text-2xl font-bold mb-4'>Registro</h2>
 
@@ -134,7 +134,7 @@ const RegisterForm = () => {
 				{/* Botón de registro */}
 				<button
 					type='submit'
-					className='w-full bg-button-1 text-white py-2 rounded hover:bg-button-2'
+					className='w-full bg-button-1 text-white py-2 rounded-lg hover:bg-button-2 h-[2.5rem]'
 				>
 					Registrarse
 				</button>
