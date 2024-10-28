@@ -1,5 +1,6 @@
 import express from 'express';
 import NotaController from '../controllers/notasController.js';
+import HistorialController from '../controllers/historialController.js';
 import {
   getLimiter,
   postLimiter,
@@ -10,6 +11,8 @@ import authenticateToken from '../infrastructure/middlewares/authMiddleware.js'
 
 const router = express.Router();
 const notaController = new NotaController();
+const historialController = new HistorialController();
+
 
 /**
  * @swagger
@@ -127,6 +130,10 @@ router.get('/:id', authenticateToken, getLimiter, (req, res) =>
   notaController.getNota(req, res)
 );
 
+router.get('/:id/history', authenticateToken, getLimiter, (req, res) =>
+  historialController.getHistorial(req, res)
+);
+
 /**
  * @swagger
  * /notas:
@@ -153,6 +160,10 @@ router.get('/:id', authenticateToken, getLimiter, (req, res) =>
  */
 router.get('/', authenticateToken, getLimiter, (req, res) =>
   notaController.getNotas(req, res)
+);
+
+router.post('/:id/history', authenticateToken, getLimiter, (req, res) =>
+  historialController.createHistorial(req, res)
 );
 
 /**

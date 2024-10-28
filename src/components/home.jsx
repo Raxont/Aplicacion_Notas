@@ -155,8 +155,8 @@ const NotesEmptyState = () => {
       )}
 
       {/* FAB */}
-      <button onClick={handleClick} className="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors">
-        <img src="/public/img/add.png" alt="Agregar notas" />
+      <button onClick={handleClick} className="absolute bottom-6 right-6 w-14 h-14 bg-background-1 rounded-full flex items-center justify-center shadow-lg hover:bg-button-2 transition-colors">
+        <img src="/public/img/add.png" alt="Agregar notas" className="filter invert"/>
       </button>
     </div>
     <ToastContainer /> {/* Notificaciones */}
