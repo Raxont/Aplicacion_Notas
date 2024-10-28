@@ -116,7 +116,7 @@ const Login = () => {
 				</button>
 				<div className='my-3.5'>
 					<span>Puede loguearse tambien con:</span>
-					<button className="w-full flex items-center bg-button-1 rounded-lg hover:bg-button-2 gap-4 text-color-1 h-[2.5rem]" onClick={handleGoogleLogin}>
+					<button className="w-full flex items-center justify-center bg-button-1 rounded-lg hover:bg-button-2 gap-4 text-color-1 h-[2.5rem]" onClick={handleGoogleLogin}>
 						<box-icon type="logo" name="google" size="md" class="fill-current"></box-icon>
 						Inicia sesión con Google
 					</button>

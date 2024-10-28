@@ -32,7 +32,7 @@ body {
     justify-content: center;
     align-items: center;
     align-content: center;
-    background: var(--background-1);
+    background: var(--color-4);
     height: 100vh;
 }
 
