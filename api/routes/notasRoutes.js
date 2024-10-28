@@ -62,30 +62,35 @@ const notaController = new NotaController();
 
 /**
  * @swagger
- * /notas:
+ * /notas/search:
  *   get:
- *     summary: Obtiene todas las notas
+ *     summary: Realiza una búsqueda de las notas
  *     tags: [Notas]
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: La cadena de búsqueda para las notas
  *     responses:
  *       200:
- *         description: Notas obtenidas correctamente
+ *         description: Nota encontrada
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Nota'
+ *               $ref: '#/components/schemas/Nota'
  *       400:
- *         description: No se encontró ninguna nota
+ *         description: Nota no encontrada
  *       401:
  *         description: Sesión no autorizada
  *       429:
  *         description: Tasa de solicitudes superada. Intenta de nuevo más tarde
  *       500:
- *         description: Error al obtener las notas
+ *         description: Error al obtener la nota
  */
-router.get('/', getLimiter, (req, res) =>
-  notaController.getNotas(req, res)
+router.get("/search",getLimiter, (req, res) =>
+  notaController.searchNotas(req, res)
 );
 
 /**
@@ -119,6 +124,34 @@ router.get('/', getLimiter, (req, res) =>
  */
 router.get('/:id', getLimiter, (req, res) =>
   notaController.getNota(req, res)
+);
+
+/**
+ * @swagger
+ * /notas:
+ *   get:
+ *     summary: Obtiene todas las notas
+ *     tags: [Notas]
+ *     responses:
+ *       200:
+ *         description: Notas obtenidas correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Nota'
+ *       400:
+ *         description: No se encontró ninguna nota
+ *       401:
+ *         description: Sesión no autorizada
+ *       429:
+ *         description: Tasa de solicitudes superada. Intenta de nuevo más tarde
+ *       500:
+ *         description: Error al obtener las notas
+ */
+router.get('/', getLimiter, (req, res) =>
+  notaController.getNotas(req, res)
 );
 
 /**
@@ -220,5 +253,7 @@ router.put('/:id', putLimiter, (req, res) =>
 router.delete('/:id', deleteLimiter, (req, res) =>
   notaController.deleteNota(req, res)
 );
+
+
 
 export default router;

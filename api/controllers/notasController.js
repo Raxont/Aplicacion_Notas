@@ -197,6 +197,37 @@ class NotasController {
       });
     }
   }
+
+  /**
+   * Buscar notas por titulo o contenido
+   * @param {Object} req - La solicitud HTTP.
+   * @param {Object} res - La respuesta HTTP.
+   * @returns {Promise<void>}
+   */
+  async searchNotas(req, res) {
+    try {
+      const { query } = req.query; // Obtener el término de búsqueda desde la consulta
+      if (!query) {
+        return res.status(400).json({
+          status: 400,
+          message: "El término de búsqueda no puede estar vacío.",
+        });
+      }
+
+      // Busca notas que contengan el término en el título o en el contenido
+      const notas = await this.notaModel.getNotasBySearch(query);
+      res.status(200).json({
+        status: 200,
+        message: "Notas encontradas",
+        data: notas,
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        message: "Error en la búsqueda de notas",
+      });
+    }
+  }
 }
 
 // Exporta la clase NotasController para su uso en otras partes de la aplicación.

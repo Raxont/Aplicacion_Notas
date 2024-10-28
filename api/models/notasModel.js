@@ -77,6 +77,24 @@ class Notas {
     await collection.deleteOne({ _id: new ObjectId(id) }); // Eliminar la nota
     return id;
   }
+
+  /**
+   * Busca notas con estos parametros
+   * @param {Object} query - Datos de la nota a buscar.
+   * @returns {Promise<Object>} - Resultado de la operación de busqueda.
+   */
+  async getNotasBySearch(query) {
+    let obj = ConnectToDatabase.instanceConnect; // Obtener la instancia de conexión a la base de datos
+    const collection = obj.db.collection("notas"); // Acceder a la colección 'notas'
+    const regex = new RegExp(query, "i"); // Crear una expresión regular para búsqueda insensible a mayúsculas
+    const res = await collection.find({
+      $or: [
+        { titulo: { $regex: regex } }, // Buscar por título
+        { contenido: { $regex: regex } } // Buscar por contenido
+      ]
+    }).toArray(); // Obtener notas que coincidan
+    return res;
+  }
 }
 
 export default Notas;
