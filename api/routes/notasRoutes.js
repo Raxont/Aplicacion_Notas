@@ -90,7 +90,7 @@ const notaController = new NotaController();
  *       500:
  *         description: Error al obtener la nota
  */
-router.get("/search",authenticateToken, getLimiter, (req, res) =>
+router.get("/search", (req, res) =>
   notaController.searchNotas(req, res)
 );
 

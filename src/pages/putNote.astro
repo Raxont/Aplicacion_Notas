@@ -1,0 +1,13 @@
+---
+import NotePut from "../components/putNote.jsx";
+import Layouts from "../layouts/Layout.astro";
+
+---
+
+<html lang="es">
+  <body>
+    <Layouts title="Actualizar Nota">
+      <NotePut client:only="react" />
+    </Layouts>
+  </body>
+</html>

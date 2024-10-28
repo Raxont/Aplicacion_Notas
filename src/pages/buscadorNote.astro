@@ -1,0 +1,13 @@
+---
+import BuscarAdd from "../components/buscadorNote.jsx";
+import Layouts from "../layouts/Layout.astro";
+
+---
+
+<html lang="es">
+  <body>
+    <Layouts title="Buscar Nota">
+      <BuscarAdd client:only="react" />
+    </Layouts>
+  </body>
+</html>

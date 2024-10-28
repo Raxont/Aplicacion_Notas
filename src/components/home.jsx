@@ -8,6 +8,7 @@ const NotesEmptyState = () => {
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [hoveredNote, setHoveredNote] = useState(null); // Estado para manejar la nota sobre la que se pasa el mouse
   const [notasConColor, setNotasConColor] = useState([]); // Estado para almacenar notas con colores
+  const [deleteEnabled, setDeleteEnabled] = useState(true); // Estado para habilitar/deshabilitar la opción de eliminar
 
   // Función para obtener las notas de la API
   const fetchNotas = async () => {
@@ -83,6 +84,15 @@ const NotesEmptyState = () => {
     }
   }, [notas]);
 
+  const handleNotaClick = (id) => {
+    // Redirige a la página /putNote con el ID de la nota
+    window.location.href = `/putNote?id=${id}`;
+  };
+  const handleNotaBuscador = () => {
+    // Redirige a la página /putNote con el ID de la nota
+    window.location.href = `/buscadorNote`;
+  };
+
   return (
     <>
     <div className="w-[100%] p-4 h-screen bg-background-1 relative">
@@ -90,11 +100,11 @@ const NotesEmptyState = () => {
       <header className="flex items-center justify-between">
         <h1 className="text-white text-4xl font-semibold">Notas</h1>
         <div className="flex gap-1">
-          <button className="p-2 rounded-2xl hover:bg-button-1">
+          <button className="p-2 rounded-2xl hover:bg-button-1" onClick={handleNotaBuscador}>
             <img src="/public/img/search.png" alt="Buscar notas" className="w-[1.5rem] filter invert" />
           </button>
-          <button className="p-2 rounded-2xl hover:bg-button-1">
-            <img src="/public/img/info_outline.png" alt="Buscar notas" className="w-[1.5rem] filter invert" />
+          <button className="p-2 rounded-2xl hover:bg-button-1" onClick={() => setDeleteEnabled(!deleteEnabled)}>
+            <img src="/public/img/info_outline.png" alt="Editar nota" className="w-[1.5rem] filter invert" />
           </button>
           <Logout />
         </div>
@@ -118,17 +128,21 @@ const NotesEmptyState = () => {
               <div
                 style={{ backgroundColor: nota.color }}
                 key={nota._id}
-                className={`p-4 mb-4 bg-white rounded-lg shadow relative transition-colors duration-300 ${
+                className={`p-4 mb-4 bg-white rounded-lg shadow relative transition-colors duration-300 cursor-pointer ${
                   hoveredNote === nota._id ? "bg-red-500" : ""
                 }`}
                 onMouseEnter={() => setHoveredNote(nota._id)}
                 onMouseLeave={() => setHoveredNote(null)}
+                onClick={() => handleNotaClick(nota._id)}
               >
                 <h2 className="text-xl font-bold">{nota.titulo}</h2>
                 <p>{nota.contenido}</p>
-                {hoveredNote === nota._id && (
+                {deleteEnabled && hoveredNote === nota._id && (
                   <button
-                    onClick={() => deleteNota(nota._id)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Evita que el click en eliminar active el click de la nota
+                      deleteNota(nota._id);
+                    }}
                     className="absolute inset-0 flex items-center justify-center text-none bg-button-2 rounded-lg"
                   >
                     <img src="/public/img/delete.png" alt="Eliminar" className="w-8 h-8" />
