@@ -8,12 +8,6 @@
     --button-1: #3B3B3B;
     --button-2: #FF0000;
     --input-1: #3B3B3B;
-    --card-1: #FD99FF;
-    --card-2: #FF9E9E;
-    --card-3: #91F48F;
-    --card-4: #FFF599;
-    --card-5: #9EFFFF;
-    --card-6: #B69CFF;
     --color-1: #FFFFFF;
     --color-2: #CFCFCF;
     --color-3: #9A9A9A;
@@ -34,6 +28,13 @@ body {
     align-content: center;
     background: var(--color-4);
     height: 100vh;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento en navegadores WebKit */
+  }
+  
+.scrollbar-hide {
+    scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
 }
 
 /* Estilos para simular vista móvil en pantallas grandes */

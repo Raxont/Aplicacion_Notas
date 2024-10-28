@@ -6,6 +6,7 @@ import {
   putLimiter,
   deleteLimiter,
 } from '../infrastructure/middlewares/rateLimit.js';
+import authenticateToken from '../infrastructure/middlewares/authMiddleware.js'
 
 const router = express.Router();
 const notaController = new NotaController();
@@ -89,7 +90,7 @@ const notaController = new NotaController();
  *       500:
  *         description: Error al obtener la nota
  */
-router.get("/search",getLimiter, (req, res) =>
+router.get("/search",authenticateToken, getLimiter, (req, res) =>
   notaController.searchNotas(req, res)
 );
 
@@ -122,7 +123,7 @@ router.get("/search",getLimiter, (req, res) =>
  *       500:
  *         description: Error al obtener la nota
  */
-router.get('/:id', getLimiter, (req, res) =>
+router.get('/:id', authenticateToken, getLimiter, (req, res) =>
   notaController.getNota(req, res)
 );
 
@@ -150,7 +151,7 @@ router.get('/:id', getLimiter, (req, res) =>
  *       500:
  *         description: Error al obtener las notas
  */
-router.get('/', getLimiter, (req, res) =>
+router.get('/', authenticateToken, getLimiter, (req, res) =>
   notaController.getNotas(req, res)
 );
 

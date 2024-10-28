@@ -199,7 +199,7 @@ router.get("/google/callback",
   }),
   (req, res) => {
     userController.googleCallback
-    res.redirect(`http://localhost:3000/home`);
+    // res.redirect(`http://localhost:3000/home`);
   }
 );
 
