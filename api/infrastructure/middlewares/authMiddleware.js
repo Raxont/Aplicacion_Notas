@@ -9,11 +9,9 @@ process.loadEnvFile();
  * @param {Function} next - Función para pasar al siguiente middleware.
  */
 const authenticateToken = (req, res, next) => {
-  console.log("🚀 ~ authenticateToken ~ userId:", userId)
-
-  if (req.session && userId) {
+  if (req.session) {
     const token = req.session.token;
-
+    const userId = req.session.passport?.user; // Obtén el ID del usuario
     if (!token) {
       // Si no hay token, responde con 401 y limpia la cookie
       res.clearCookie("connect.sid", {

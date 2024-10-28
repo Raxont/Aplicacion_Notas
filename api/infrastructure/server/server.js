@@ -8,8 +8,11 @@ import { jsonParseErrorHandler } from "../middlewares/errorHandling.js";
 import sessionConfig from "../middlewares/server/sessionConfig.js";
 import corsConfig from "../middlewares/server/corsConfig.js";
 import { swaggerDocs, swaggerUi } from "../middlewares/server/swagger.js";
+import authenticateToken from '../middlewares/authMiddleware.js';
+
 
 import usuariosRoutes from "../../routes/usuariosRoutes.js";
+import notasRoutes from "../../routes/notasRoutes.js";
 
 process.loadEnvFile();
 
@@ -31,6 +34,7 @@ const createServer = () => {
   app.use("/api", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   app.use("/usuarios", usuariosRoutes);
+  app.use("/notas", authenticateToken, notasRoutes);
 
   const server = http.createServer(app);
 
