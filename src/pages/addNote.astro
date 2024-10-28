@@ -1,0 +1,13 @@
+---
+import NoteAdd from "../components/addNote.jsx";
+import Layouts from "../layouts/Layout.astro";
+
+---
+
+<html lang="es">
+  <body>
+    <Layouts title="Home">
+      <NoteAdd client:only="react" />
+    </Layouts>
+  </body>
+</html>

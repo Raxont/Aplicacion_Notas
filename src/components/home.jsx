@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const NotesEmptyState = () => {
   const [notas, setNotas] = useState([]); // Estado para almacenar las notas
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
+  const [hoveredNote, setHoveredNote] = useState(null); // Estado para manejar la nota sobre la que se pasa el mouse
+  const [notasConColor, setNotasConColor] = useState([]); // Estado para almacenar notas con colores
 
   // Función para obtener las notas de la API
   const fetchNotas = async () => {
@@ -23,6 +25,19 @@ const NotesEmptyState = () => {
       setLoading(false); // Finaliza la carga
     }
   };
+
+  // Función para eliminar una nota
+  const deleteNota = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/notas/${id}`, { method: "DELETE", credentials: 'include' }); // Realiza la solicitud de eliminación a la API
+      const data = await response.json();
+      await handleResponse(data)
+      setNotas(notas.filter((nota) => nota._id !== id)); // Filtra la nota eliminada del estado
+    } catch (error) {
+      console.error("Error al eliminar la nota:", error);
+    }
+  };
+
   const handleResponse = async (data) => {
 		if (data.status === 429){
 			toast.error(data.message);
@@ -43,16 +58,30 @@ const NotesEmptyState = () => {
     const b = Math.floor(Math.random() * 56) + 200; // Rango de 200 a 255
     return `rgb(${r}, ${g}, ${b})`;
   };
-
-  const notasConColor = notas.map((nota) => ({
-    ...nota,
-    color: getRandomLightColor(),
-  }));
+  
+  const handleClick = () => {
+    toast.success('Agregando nueva nota...');
+		setTimeout(() => {
+			window.location.href = '/addNote';
+       // Redirige después de mostrar el mensaje
+		}, 3000); // Espera 3 segundos antes de redirigir
+  };
 
   // useEffect para llamar a la función fetchNotas cuando se monte el componente
   useEffect(() => {
     fetchNotas();
   }, []);
+
+  useEffect(() => {
+    // Generar colores solo cuando las notas se hayan cargado
+    if (notas.length > 0) {
+      const notasConColor = notas.map((nota) => ({
+        ...nota,
+        color: getRandomLightColor(), // Asigna un color aleatorio
+      }));
+      setNotasConColor(notasConColor); // Actualiza el estado con las notas y sus colores
+    }
+  }, [notas]);
 
   return (
     <>
@@ -62,10 +91,10 @@ const NotesEmptyState = () => {
         <h1 className="text-white text-4xl font-semibold">Notas</h1>
         <div className="flex gap-1">
           <button className="p-2 rounded-2xl hover:bg-button-1">
-            <img src="/public/img/search.png" alt="Buscar notas" className="w-[2rem]" />
+            <img src="/public/img/search.png" alt="Buscar notas" className="w-[1.5rem] filter invert" />
           </button>
           <button className="p-2 rounded-2xl hover:bg-button-1">
-            <img src="/public/img/info_outline.png" alt="Buscar notas" className="w-[2rem]" />
+            <img src="/public/img/info_outline.png" alt="Buscar notas" className="w-[1.5rem] filter invert" />
           </button>
           <Logout />
         </div>
@@ -83,22 +112,36 @@ const NotesEmptyState = () => {
           <p className="text-gray-400 text-2xl pt-2">Crea su primera nota!</p>
         </div>
       ) : (
-        // Si hay notas, mostrarlas
         <div className="mt-4">
-          <div className="overflow-y-auto max-h-[90vh] pr-4 scrollbar-hide">
+          <div className="overflow-y-auto max-h-[90vh] scrollbar-hide">
             {notasConColor.map((nota) => (
-              <div key={nota._id} className="p-4 mb-4 rounded shadow" style={{ backgroundColor: nota.color }}>
-                <h2 className="text-xl font-semibold">{nota.titulo}</h2>
+              <div
+                style={{ backgroundColor: nota.color }}
+                key={nota._id}
+                className={`p-4 mb-4 bg-white rounded-lg shadow relative transition-colors duration-300 ${
+                  hoveredNote === nota._id ? "bg-red-500" : ""
+                }`}
+                onMouseEnter={() => setHoveredNote(nota._id)}
+                onMouseLeave={() => setHoveredNote(null)}
+              >
+                <h2 className="text-xl font-bold">{nota.titulo}</h2>
                 <p>{nota.contenido}</p>
+                {hoveredNote === nota._id && (
+                  <button
+                    onClick={() => deleteNota(nota._id)}
+                    className="absolute inset-0 flex items-center justify-center text-none bg-button-2 rounded-lg"
+                  >
+                    <img src="/public/img/delete.png" alt="Eliminar" className="w-8 h-8" />
+                  </button>
+                )}
               </div>
             ))}
           </div>
-          
         </div>
       )}
 
       {/* FAB */}
-      <button className="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors">
+      <button onClick={handleClick} className="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors">
         <img src="/public/img/add.png" alt="Agregar notas" />
       </button>
     </div>
