@@ -63,10 +63,14 @@ const Login = () => {
 		}
 	
 		if (response.status===200) {
-			window.location.href = '/home';
+			// Notificar éxito
+			toast.success('Login exitoso! Redirigiendo...');
+			setTimeout(() => {
+			  window.location.href = '/home'; // Redirige después de mostrar el mensaje
+			}, 3000); // Espera 3 segundos antes de redirigir
 		} else {
 			console.error('Error en el login:', data.message || 'Respuesta inesperada');
-			toast.error('Error en el login');
+			toast.error('Error en el login: ' + (data.message || 'Inténtalo de nuevo.'));
 		}
 	};
 

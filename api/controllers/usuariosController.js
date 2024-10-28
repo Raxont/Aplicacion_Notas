@@ -87,13 +87,6 @@ class UserController {
    */
   async createUser(req, res) {
     try {
-      const { nombre, contrasena_hash, email } = req.body;
-      if (!nombre || !contrasena_hash || !email) {
-        return res.status(400).json({
-          status: 400,
-          message: "Debe ingresar el nombre, la contraseña y el correo",
-        });
-      }
       // Validar los datos del request
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -102,11 +95,19 @@ class UserController {
           message: "Error en la validacion de la creacion del usuario",
         });
       }
+      const { nombre, contrasena_hash, email } = req.body;
+      if (!nombre || !contrasena_hash || !email) {
+        return res.status(400).json({
+          status: 400,
+          message: "Debe ingresar el nombre, la contraseña y el correo",
+        });
+      }
       // Verificar si el nombre ya existe en la base de datos
       const existingUserNombre = await this.userModel.findByNick(nombre);
       if (existingUserNombre) {
         return res.status(400).json({
           status: 400,
+          field: "nombre",
           message: "El nombre ya existe en la base de datos",
         });
       }
@@ -115,7 +116,15 @@ class UserController {
       if (existingUserEmail) {
         return res.status(400).json({
           status: 400,
+          field: 'email',
           message: "El email ya existe en la base de datos",
+        });
+      }
+      if (contrasena_hash.length < 4) {
+        return res.status(400).json({
+          status: 400,
+          field: "contrasena_hash",
+          message: "La contraseña debe tener al menos 4 caracteres",
         });
       }
       req.body.fecha_de_creacion = new Date();
