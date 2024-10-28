@@ -2,7 +2,7 @@ import Logout from "./logout";
 
 const NotesEmptyState = () => {
     return (
-      <div className="w-[100%] p-4 h-screen bg-background-1">
+      <div className="w-[100%] p-4 h-screen bg-background-1 relative">
         {/* Header */}
         <header className="flex items-center justify-between">
           <h1 className="text-white text-4xl font-semibold">Notas</h1>
@@ -25,7 +25,7 @@ const NotesEmptyState = () => {
         </div>
   
         {/* FAB */}
-        <button className="bottom-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors">
+        <button className="absolute bottom-6 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors">
           <img src="/public/img/add.png" alt="Agregar notas" />
         </button>
       </div>
