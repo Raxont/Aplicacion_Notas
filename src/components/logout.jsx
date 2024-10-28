@@ -32,7 +32,7 @@ const Logout = () => {
 
 				<button
 					onClick={handleLogout}
-					className='w-full text-white py-2 rounded-full hover:bg-button-1 p-2'
+					className='text-white py-2 rounded-2xl hover:bg-button-1 p-2'
 				>
 					Salir
 				</button>
