@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NoteAdd = () => {
-  const [notas, setNotas] = useState([]); // Estado para almacenar las notas
+  const [notas, setNotas] = useState([]); // Estado para almacenar la nota
   const [newNota, setNewNota] = useState({ titulo: "", contenido: "" }); // Estado para la nueva nota
   const [noteId, setNoteId] = useState(null); // Estado para almacenar el ID de la nota a editar
 
@@ -18,6 +18,10 @@ const NoteAdd = () => {
       const data = await response.json();
       await handleResponse(data);
       if (data.data) {
+        setNotas({
+          titulo: data.data.titulo,
+          contenido: data.data.contenido,
+        }); // Establecer la información de la nota sin modificar
         setNewNota({
           titulo: data.data.titulo,
           contenido: data.data.contenido,
@@ -31,6 +35,7 @@ const NoteAdd = () => {
   // Función para agregar o editar una nota
   const handleClickEdit = async () => {
     try {
+      const userId = await getUserId(); // Obtener el id del usuario de la sesion
       const response = await fetch(`http://localhost:3001/notas/${noteId}`, {
         method: "PUT",
         headers: {
@@ -41,7 +46,10 @@ const NoteAdd = () => {
       });
       const data = await response.json();
       await handleResponse(data);
-      setNotas((prevNotas) => prevNotas.map(nota => (nota._id === noteId ? { ...nota, ...newNota } : nota))); // Actualiza la lista de notas
+
+      // Llamar a la función para registrar el historial
+      await addHistorial(noteId,userId);
+
       toast.success('Nota actualizada correctamente!');
       setNewNota({ titulo: "", contenido: "" }); // Limpiar el formulario
       setTimeout(() => {
@@ -49,6 +57,52 @@ const NoteAdd = () => {
       }, 3000); // Redirige después de mostrar el mensaje
     } catch (error) {
       console.error("Error al editar la nota:", error);
+    }
+  };
+
+  // Funcion para obtener la id del usuario de la sesion
+  const getUserId = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/usuarios/validarSesion", {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      return data.data.userId;
+    } catch (error) {
+      console.error("Error al obtener el id del usuario:", error);
+    }
+  };
+
+// Función para guardar en el historial
+  const addHistorial = async (notaId,userId) => {
+    try {
+      const historialData = {
+        accion: "EDICION", // Tipo de acción
+        nota_id: notaId,
+        usuario_id: userId,
+        fecha: new Date(),
+        cambios : {
+          titulo: {
+            antes: notas.titulo,
+            despues: newNota.titulo
+          },
+          contenido: {
+            antes: notas.contenido,
+            despues: newNota.contenido
+          }
+        }
+      };
+      
+      await fetch(`http://localhost:3001/notas/${notaId}/history`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(historialData),
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error("Error al agregar al historial:", error);
     }
   };
 
