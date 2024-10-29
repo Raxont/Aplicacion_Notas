@@ -158,7 +158,7 @@ const historialController = new HistorialController();
  *       500:
  *         description: Error al obtener la nota
  */
-router.get("/search", (req, res) =>
+router.get("/search",authenticateToken, (req, res) =>
   notaController.searchNotas(req, res)
 );
 
@@ -316,7 +316,7 @@ router.post('/:id/history', authenticateToken, getLimiter, (req, res) =>
  *       500:
  *         description: Error al crear la nota
  */
-router.post('/', postLimiter, (req, res) =>
+router.post('/', authenticateToken, postLimiter, (req, res) =>
   notaController.createNota(req, res)
 );
 
@@ -355,7 +355,7 @@ router.post('/', postLimiter, (req, res) =>
  *       500:
  *         description: Error al actualizar la nota
  */
-router.put('/:id', putLimiter, (req, res) =>
+router.put('/:id', authenticateToken, putLimiter, (req, res) =>
   notaController.updateNota(req, res)
 );
 
@@ -384,7 +384,7 @@ router.put('/:id', putLimiter, (req, res) =>
  *       500:
  *         description: Error al eliminar la nota
  */
-router.delete('/:id', deleteLimiter, (req, res) =>
+router.delete('/:id', authenticateToken,  deleteLimiter, (req, res) =>
   notaController.deleteNota(req, res)
 );
 
