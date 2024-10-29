@@ -66,6 +66,43 @@ const historialController = new HistorialController();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Historial:
+ *       type: object
+ *       required:
+ *         - titulo
+ *         - contenido
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "671acc1934a4276b56b01011"
+ *         nota_id:
+ *           type: string
+ *           example: "671acc1934a4276b56b01011"
+ *         usuario_id:
+ *           type: string
+ *           example: "1234567890"
+ *         accion:
+ *           type: string
+ *           example: "ELIMINACION || EDICION || CREACION"
+ *         fecha:
+ *           type: string
+ *           format: date-time
+ *           example: "2024-01-01T01:00:00Z"
+ *         cambios:
+ *           type: object
+ *           properties:
+ *            titulo:
+ *             type: string
+ *             example: "Titulo"
+ *            contenido:
+ *             type: string
+ *             example: "Contenido"
+ */
+
+/**
+ * @swagger
  * /notas/search:
  *   get:
  *     summary: Realiza una búsqueda de las notas
@@ -130,6 +167,35 @@ router.get('/:id', authenticateToken, getLimiter, (req, res) =>
   notaController.getNota(req, res)
 );
 
+/**
+ * @swagger
+ * /notas/{id}/history:
+ *   get:
+ *     summary: Obtiene el historial de una nota
+ *     tags: [Notas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: El ID de la nota
+ *     responses:
+ *       200:
+ *         description: Historial encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Historial'
+ *       400:
+ *         description: Historial no encontrado
+ *       401:
+ *         description: Sesión no autorizada
+ *       429:
+ *         description: Tasa de solicitudes superada. Intenta de nuevo más tarde
+ *       500:
+ *         description: Error al obtener el historial
+ */
 router.get('/:id/history', authenticateToken, getLimiter, (req, res) =>
   historialController.getHistorial(req, res)
 );

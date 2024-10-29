@@ -1,6 +1,7 @@
 // Importa los módulos necesarios para la gestión de notas.
 import { validationResult } from "express-validator";
 import HistorialModel from "../models/historialModel.js";
+import { ObjectId } from "mongodb";
 
 /**
  * Clase HistorialController que gestiona las peticiones HTTP relacionadas con el historial de cambios de notas.
@@ -109,7 +110,7 @@ class HistorialController {
 
       // Crear la entrada de historial
       const nuevaVersion = {
-        nota_id,
+        nota_id: new ObjectId(nota_id),
         usuario_id,
         accion,
         fecha: new Date(),
