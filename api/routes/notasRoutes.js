@@ -70,9 +70,6 @@ const historialController = new HistorialController();
  *   schemas:
  *     Historial:
  *       type: object
- *       required:
- *         - titulo
- *         - contenido
  *       properties:
  *         _id:
  *           type: string
@@ -90,6 +87,37 @@ const historialController = new HistorialController();
  *           type: string
  *           format: date-time
  *           example: "2024-01-01T01:00:00Z"
+ *         cambios:
+ *           type: object
+ *           properties:
+ *            titulo:
+ *             type: string
+ *             example: "Titulo"
+ *            contenido:
+ *             type: string
+ *             example: "Contenido"
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Historial2:
+ *       type: object
+ *       required:
+ *         - nota_id
+ *         - usuario_id
+ *         - accion
+ *       properties:
+ *         nota_id:
+ *           type: string
+ *           example: "671acc1934a4276b56b01011"
+ *         usuario_id:
+ *           type: string
+ *           example: "1234567890"
+ *         accion:
+ *           type: string
+ *           example: "CREACION"
  *         cambios:
  *           type: object
  *           properties:
@@ -228,6 +256,34 @@ router.get('/', authenticateToken, getLimiter, (req, res) =>
   notaController.getNotas(req, res)
 );
 
+/**
+ * @swagger
+ * /notas/{id}/history:
+ *   post:
+ *     summary: Crea un nuevo historial
+ *     tags: [Notas]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Historial2'
+ *     responses:
+ *       201:
+ *         description: Historial creado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Historial'
+ *       400:
+ *         description: No se pudo crear el historial
+ *       401:
+ *         description: Sesión no autorizada
+ *       429:
+ *         description: Tasa de solicitudes superada. Intenta de nuevo más tarde
+ *       500:
+ *         description: Error al crear el historial
+ */
 router.post('/:id/history', authenticateToken, getLimiter, (req, res) =>
   historialController.createHistorial(req, res)
 );
