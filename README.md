@@ -11,18 +11,6 @@ MongoDB:
 https://www.mongodb.com/try/download/community
 ```
 
-Mongo Shell:
-
-```http
-https://www.mongodb.com/try/download/shell
-```
-
-Herramientas de mongoDB:
-
-```http
-https://www.mongodb.com/try/download/database-tools
-```
-
 Usar la version **23.0.0** de Node.js:
 
 ```bash
@@ -32,21 +20,17 @@ nvm use 23.0.0
 
 ## Tecnologías usadas
 
-**Server:** Node.js, Express.js, MongoDB, Passportjs, Swagger, Bcryptjs, Jsonwebtoken,
+**Cliente**: Astro, React, Tailwind, Sweetalert
+
+**Server:** Node.js, Express.js, MongoDB, Passportjs, Swagger, Bcryptjs, Jsonwebtoken, Cors
 
 ## Instalación
 
 Clona mi repositorio, instala mi proyecto con npm
 
 ```bash
-git clone https://github.com/Raxont/Pushup_Backend.git
+git clone https://github.com/Raxont/Aplicacion_Notas.git
 npm i
-```
-
-Importar la base de datos del backup:
-
-```bash
-node --run import
 ```
 
 ## Ejecución
@@ -54,7 +38,8 @@ node --run import
 Para ejecutar el codigo usa el siguiente comando:
 
 ```bash
-node --run dev
+node --run dev (Backend)
+node --run start (Frontend)
 ```
 
 ## Variables de entorno
@@ -88,52 +73,94 @@ GOOGLE_CLIENT_SECRET;
 ```bash
 │   .env
 │   .gitignore
-│   app.js
+│   astro.config.js
+│   estructura_proyecto.txt
+│   package-lock.json
 │   package.json
 │   README.md
-│
+│   tailwind.config.mjs
+│       
 ├───api
-│   │   server.js
-│   │
 │   ├───controllers
+│   │       historialController.js
+│   │       notasController.js
 │   │       usuariosController.js
-│   │
-│   ├───helpers
-│   │   └───backup
-│   │           activdades.json
-│   │           categorias.json
-│   │           colaboraciones.json
-│   │           estadisticas.json
-│   │           etiquetas.json
-│   │           hitos.json
-│   │           import.js
-│   │           objetivos.json
-│   │           recordatorios.json
-│   │           reportes.json
-│   │           usuarios.json
-│   │
+│   │       
 │   ├───infrastructure
 │   │   ├───database
 │   │   │       mongodb.js
-│   │   │
-│   │   └───middlewares
-│   │       │   authMiddleware.js
-│   │       │   errorHandling.js
-│   │       │   googleAuth.js
-│   │       │   rateLimit.js
-│   │       │
-│   │       └───server
-│   │               sessionConfig.js
-│   │               swagger.js
-│   │
+│   │   │       
+│   │   ├───middlewares
+│   │   │   │   authMiddleware.js
+│   │   │   │   errorHandling.js
+│   │   │   │   googleAuth.js
+│   │   │   │   rateLimit.js
+│   │   │   │   
+│   │   │   └───server
+│   │   │           corsConfig.js
+│   │   │           sessionConfig.js
+│   │   │           swagger.js
+│   │   │           
+│   │   └───server
+│   │           server.js
+│   │           
 │   ├───models
+│   │       historialModel.js
+│   │       notasModel.js
 │   │       usuariosModel.js
-│   │
+│   │       
 │   ├───routes
+│   │       notasRoutes.js
 │   │       usuariosRoutes.js
-│   │
+│   │       
 │   └───utils
 │           jwtUtils.js
+│           
+├───public
+│   ├───font
+│   │       Nunito-Regular.ttf
+│   │       
+│   └───img
+│           add.png
+│           chevron_left.png
+│           close.png
+│           cuate.png
+│           delete.png
+│           info.png
+│           info_outline.png
+│           logo.png
+│           mode.png
+│           rafiki.png
+│           save.png
+│           search.png
+│           visibility.png
+│           
+└───src
+    │   env.d.ts
+    │   
+    ├───components
+    │       addNote.jsx
+    │       buscadorNote.jsx
+    │       home.jsx
+    │       login.jsx
+    │       logout.jsx
+    │       putNote.jsx
+    │       register.jsx
+    │       sessionChecker.jsx
+    │       
+    ├───layouts
+    │       Layout.astro
+    │       
+    ├───pages
+    │       addNote.astro
+    │       buscadorNote.astro
+    │       home.astro
+    │       index.astro
+    │       putNote.astro
+    │       register.astro
+    │       
+    └───style
+            global.css
 ```
 
 ## Endpoints
