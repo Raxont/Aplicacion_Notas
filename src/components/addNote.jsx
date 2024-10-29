@@ -14,6 +14,7 @@ const NoteAdd = () => {
   // Función para agregar una nueva nota
   const addNota = async () => {
     try {
+      const userId = await getUserId(); // Obtener el id del usuario de la sesion
       const response = await fetch("http://localhost:3001/notas", {
         method: "POST",
         headers: {
@@ -26,8 +27,48 @@ const NoteAdd = () => {
       await handleResponse(data)
       setNotas([...notas, data.data]); // Actualizar el estado para incluir la nueva nota
       setNewNota({ titulo: "", contenido: "" }); // Limpiar el formulario
+
+      // Llamar a la función para registrar el historial
+      await addHistorial(data.data._id,userId);
+      
     } catch (error) {
       console.error("Error al agregar la nota:", error);
+    }
+  };
+
+  // Funcion para obtener la id del usuario de la sesion
+  const getUserId = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/usuarios/validarSesion", {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      return data.data.userId;
+    } catch (error) {
+      console.error("Error al obtener el id del usuario:", error);
+    }
+  };
+
+// Función para guardar en el historial
+  const addHistorial = async (notaId,userId) => {
+    try {
+      const historialData = {
+        accion: "CREACION", // Tipo de acción
+        nota_id: notaId,
+        usuario_id: userId,
+        fecha: new Date()
+      };
+      
+      await fetch(`http://localhost:3001/notas/${notaId}/history`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(historialData),
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error("Error al agregar al historial:", error);
     }
   };
 

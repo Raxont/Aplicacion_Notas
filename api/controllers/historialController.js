@@ -62,25 +62,48 @@ class HistorialController {
           message: "Error en la validación de la creación del historial",
         });
       }
+      console.log("🚀 ~ HistorialController ~ createHistorial ~ req.body:", req.body)
+      console.log("🚀 ~ HistorialController ~ createHistorial ~ req.params:", req.params)
 
-      const { titulo, contenido, accion, usuario_id } = req.body;
+      const { accion, usuario_id, nota_id } = req.body;
 
-      if (!titulo || !contenido || !accion || !usuario_id) {
+      // Validar que todos los campos requeridos estén presentes
+      if (!accion || !usuario_id || !nota_id) {
         return res.status(400).json({
           status: 400,
-          message: "Debe ingresar el título, contenido, acción y usuario_id",
+          message: "Debe ingresar la acción, usuario_id y nota_id",
         });
       }
 
+      // Para la acción EDICION, validar que se envíen los datos de cambios
+      let cambios = null;
+      if (accion === "EDICION") {
+        const { titulo, contenido } = req.body.cambios || {};
+        if (!titulo || !contenido || !titulo.antes || !titulo.despues || !contenido.antes || !contenido.despues) {
+          return res.status(400).json({
+            status: 400,
+            message: "Para la acción de EDICION, se deben proporcionar los cambios completos de título y contenido",
+          });
+        }
+        cambios = {
+          titulo: {
+            antes: titulo.antes,
+            despues: titulo.despues,
+          },
+          contenido: {
+            antes: contenido.antes,
+            despues: contenido.despues,
+          },
+        };
+      }
+
+      // Crear la entrada de historial
       const nuevaVersion = {
-        nota_id: req.params.id,
-        usuario_id: usuario_id,
-        accion: accion,
+        nota_id,
+        usuario_id,
+        accion,
         fecha: new Date(),
-        cambios: accion === "EDICION" ? {
-          titulo: req.body.cambios?.titulo,
-          contenido: req.body.cambios?.contenido
-        } : null,
+        cambios, // Será null en caso de CREACION o ELIMINACION
       };
 
       await this.historialModel.insert(nuevaVersion);
