@@ -62,8 +62,6 @@ class HistorialController {
           message: "Error en la validación de la creación del historial",
         });
       }
-      console.log("🚀 ~ HistorialController ~ createHistorial ~ req.body:", req.body)
-      console.log("🚀 ~ HistorialController ~ createHistorial ~ req.params:", req.params)
 
       const { accion, usuario_id, nota_id } = req.body;
 
@@ -95,6 +93,18 @@ class HistorialController {
             despues: contenido.despues,
           },
         };
+      }else if (accion === "ELIMINACION") {
+        const { titulo, contenido } = req.body.cambios;
+        if (!titulo || !contenido) {
+          return res.status(400).json({
+            status: 400,
+            message: "Para la acción de EDICION, se deben proporcionar los cambios completos de título y contenido",
+          });
+        }
+        cambios = {
+          titulo: titulo,
+          contenido: contenido
+        };
       }
 
       // Crear la entrada de historial
@@ -103,7 +113,7 @@ class HistorialController {
         usuario_id,
         accion,
         fecha: new Date(),
-        cambios, // Será null en caso de CREACION o ELIMINACION
+        cambios, // Será null en caso de CREACION
       };
 
       await this.historialModel.insert(nuevaVersion);

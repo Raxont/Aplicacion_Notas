@@ -28,14 +28,60 @@ const NotesEmptyState = () => {
   };
 
   // Función para eliminar una nota
-  const deleteNota = async (id) => {
+  const deleteNota = async (id,titulo,contenido) => {
     try {
+      const userId = await getUserId(); // Obtener el id del usuario de la sesion
       const response = await fetch(`http://localhost:3001/notas/${id}`, { method: "DELETE", credentials: 'include' }); // Realiza la solicitud de eliminación a la API
       const data = await response.json();
       await handleResponse(data)
       setNotas(notas.filter((nota) => nota._id !== id)); // Filtra la nota eliminada del estado
+
+      // Llamar a la función para registrar el historial
+      await addHistorial(id,userId,titulo,contenido);
     } catch (error) {
       console.error("Error al eliminar la nota:", error);
+    }
+  };
+
+  // Funcion para obtener la id del usuario de la sesion
+  const getUserId = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/usuarios/validarSesion", {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      return data.data.userId;
+    } catch (error) {
+      console.error("Error al obtener el id del usuario:", error);
+    }
+  };
+
+// Función para guardar en el historial
+  const addHistorial = async (notaId,userId,titulo,contenido) => {
+    console.log("🚀 ~ addHistorial ~ notas:", notas)
+
+    try {
+      const historialData = {
+        accion: "ELIMINACION", // Tipo de acción
+        nota_id: notaId,
+        usuario_id: userId,
+        fecha: new Date(),
+        cambios : {
+          titulo : titulo ,
+          contenido : contenido
+        }
+      };
+      
+      await fetch(`http://localhost:3001/notas/${notaId}/history`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(historialData),
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error("Error al agregar al historial:", error);
     }
   };
 
@@ -141,7 +187,7 @@ const NotesEmptyState = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // Evita que el click en eliminar active el click de la nota
-                      deleteNota(nota._id);
+                      deleteNota(nota._id,nota.contenido,nota.titulo);
                     }}
                     className="absolute inset-0 flex items-center justify-center text-none bg-button-2 rounded-lg"
                   >
