@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "node --watch ./api/infrastructure/server/server.js",
+    "dev": "node --watch ./api/server.js",
     "start": "astro dev",
     "import": "node api/helpers/backup/import.js"
   },
