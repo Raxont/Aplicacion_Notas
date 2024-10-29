@@ -257,8 +257,6 @@ class UserController {
 
       // Loguearse con el usuario de passport
       const { token, user } = await this.passportLogin(req, res);
-      console.log("🚀 ~ UserController ~ googleCallback ~ user:", user)
-      console.log("🚀 ~ UserController ~ googleCallback ~ token:", token)
 
       // Verificar si token y userData son válidos
       if (!token || !user) {
@@ -270,14 +268,8 @@ class UserController {
       }
       
       req.session.token = token;
-      console.log("🚀 ~ UserController ~ googleCallback ~ req.session.token:", req.session.token)
-      req.session.user = userData.id;
 
-      res.json({
-        status: 200,
-        message: "Usuario autenticado con éxito",
-        data: { token, user },
-      });
+      res.redirect(`http://localhost:3000/home`);
     } catch (error) {
       res.status(500).json({
         status: 500,
@@ -298,8 +290,7 @@ class UserController {
           message: "Error en la generacion del token",
         });
       }
-      console.log("🚀 ~ UserController ~ googleCallback ~ user:", userData.id)
-      console.log("🚀 ~ UserController ~ googleCallback ~ token:", token)
+
       return { token, user: userData.id };
     } catch (error) {
       res.status(500).json({

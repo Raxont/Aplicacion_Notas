@@ -21,17 +21,17 @@ passport.use(
         const clienteCollection = db.collection("usuarios");
 
         // Busca al usuario en la colección "cliente"
-        let existingUser = await clienteCollection.findOne({
-          id: profile.id,
-        });
+        let existingUser = await clienteCollection.findOne({id: profile.id});
 
         if (existingUser) {
           // Si el usuario ya existe, devuelve el usuario con el campo isRegistered
-          (existingUser = profile), (existingUser.isRegistered = true);
+          existingUser = profile;
+          existingUser.isRegistered = true;
           return done(null, existingUser);
         } else {
           // Si no existe, crea un objeto de usuario con isRegistered = false
-          (existingUser = profile), (existingUser.isRegistered = false);
+          existingUser = profile;
+          existingUser.isRegistered = false;
           return done(null, existingUser);
         }
       } catch (error) {
@@ -48,7 +48,17 @@ passport.serializeUser((user, done) => {
 
 // Deserializa el usuario de la sesión
 passport.deserializeUser(async (id, done) => {
-  done(null, done);
+  try {
+    const dbConnection = new ConnectToDatabase();
+    await dbConnection.connectOpen();
+    const db = dbConnection.db;
+    const clienteCollection = db.collection("usuarios");
+
+    const user = await clienteCollection.findOne({ id });
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
 });
 
 export default passport; // Exporta el objeto de configuración de passport

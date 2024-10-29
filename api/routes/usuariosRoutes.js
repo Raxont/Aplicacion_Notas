@@ -189,7 +189,7 @@ router.get("/validarSesion", authenticateToken, getLimiter,(req, res) => {
   }
 });
 
-router.get("/google", loginLimiter, 
+router.get("/google", 
   passportGoogle.authenticate("google", { scope: ["profile", "email"] })
 );
 
@@ -198,8 +198,7 @@ router.get("/google/callback",
     failureRedirect: "/login",
   }),
   (req, res) => {
-    userController.googleCallback
-    // res.redirect(`http://localhost:3000/home`);
+    userController.googleCallback(req, res)
   }
 );
 
