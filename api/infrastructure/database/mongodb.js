@@ -40,8 +40,11 @@ export default class ConnectToDatabase {
      * @throws {Error} - Lanza un error si la conexión falla.
      */
     async connectOpen() {
+        //Utiliza el host de pruebas o el de produccion dependiendo del NODE_ENV
+        const host = process.env.NODE_ENV === 'test'? process.env.VITE_MONGO_HOST_TEST : process.env.VITE_MONGO_HOST;
+
         // Crea una nueva instancia de MongoClient con la URL de conexión
-        this.connection = new MongoClient(`${process.env.VITE_MONGO_ACCESS}${this.user}:${this.getPassword}@${process.env.VITE_MONGO_HOST}:${process.env.VITE_MONGO_PORT}/${this.db}`);
+        this.connection = new MongoClient(`${process.env.VITE_MONGO_ACCESS}${this.user}:${this.getPassword}@${host}:${process.env.VITE_MONGO_PORT}/${this.db}`);
         try {
             await this.connection.connect(); // Intenta conectar a la base de datos
             this.db = this.connection.db(process.env.VITE_MONGO_DB_NAME); // Selecciona la base de datos
